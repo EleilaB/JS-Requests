@@ -1,16 +1,12 @@
 ////////////////////////////////////////////////
 //THE TEST SERVER IS RUNNING ON LOCALHOST:3000//
 ////////////////////////////////////////////////
-
-const { default: axios } = require("axios");
-
 // PROBLEM 1
 /*
     In the index.html file in this folder there is a button with an id of 'say-hello-button'!
 
     Use querySelector to select that button and save it to a variable called sayHelloButton
 */
-
 // CODE HERE
 
 let sayHelloButton = document.querySelector(`#say-hello-button`)
@@ -82,7 +78,16 @@ sayHelloButton.addEventListener("click", sayHello)
     Handle the promise that's returned with a .then, which you should pass a callback function to. Inside the callback function, console.log the response's data (in the intermediate instructions we'll come back to this function and add HTML).
 */ 
 
-const ohMy = () => {}
+const ohMy = () => {
+    axios.get('http://localhost:3000/animals').then(res => {
+        for(let i = 0; i < res.data.length; i++){
+            let body = document.querySelector('body');
+            let resData = document.createElement('p');
+            resData.textContent = res.data[i];
+            body.appendChild(resData);
+        }
+    })
+}
 
 document.getElementById('animals-button').addEventListener('click', ohMy)
 
@@ -101,8 +106,14 @@ document.getElementById('animals-button').addEventListener('click', ohMy)
 */
 
 const repeatMyParam = () => {
-    //YOUR CODE HERE
+    axios.get('http://localhost:3000/repeat/peekaboo').then(res => {
+        console.log(res.data)
+        document.querySelector('#repeat-text').textContent = res.data;
+        document.querySelector('#repeat-text').style.display = 'block';
+    })
 }
+
+document.querySelector('#repeat-button').addEventListener('click', repeatMyParam)
 
 // PROBLEM 7
 /*
@@ -126,7 +137,13 @@ const repeatMyParam = () => {
 
 // CODE HERE
 
+function queryTest() {
+    axios.get('http://localhost:3000/query-test/?title=Sir').then(res => {
+        console.log(res.data);
+    })
+}
 
+document.querySelector('#query-button').addEventListener('click', queryTest)
 
 ////////////////
 //INTERMEDIATE//
@@ -146,8 +163,10 @@ const repeatMyParam = () => {
     In the function that you wrote for Problem 8, change the URL to test a couple different scenarios. 
 
     1: Send no queries on the URL -- what happened? 
+        Console returns: "You sent and empty query!"
 
     2: Send more than 1 query on the URL -- what happened? 
+        Console returns as though the second query is part of the value for the key/value pair in the first query.
 */
 
 // Edit code in Problem 8
@@ -178,3 +197,21 @@ const repeatMyParam = () => {
 */
 
 // CODE HERE 
+
+function createFood(event) {
+    event.preventDefault();
+    let foodInput = document.querySelector('#food-input');
+    let body = {
+        'newFood': foodInput.value
+    };
+    axios.post('http://localhost:3000/food', body).then(res => {
+        console.log(res.data)
+        let form = document.querySelector('form')
+        let newFoodLog = document.createElement('p')
+        newFoodLog.textContent = res.data
+        form.appendChild(newFoodLog)
+    });
+    foodInput.value = ''
+}
+
+document.querySelector('#food-button').addEventListener('click', createFood)

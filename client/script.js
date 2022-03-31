@@ -138,7 +138,7 @@ document.querySelector('#repeat-button').addEventListener('click', repeatMyParam
 // CODE HERE
 
 function queryTest() {
-    axios.get('http://localhost:3000/query-test/?title=Sir').then(res => {
+    axios.get('http://localhost:3000/query-test/?title=Sir&name=Yeshua').then(res => {
         console.log(res.data);
     })
 }
@@ -163,10 +163,10 @@ document.querySelector('#query-button').addEventListener('click', queryTest)
     In the function that you wrote for Problem 8, change the URL to test a couple different scenarios. 
 
     1: Send no queries on the URL -- what happened? 
-        Console returns: "You sent and empty query!"
+        Console returns: "You sent an empty query!"
 
     2: Send more than 1 query on the URL -- what happened? 
-        Console returns as though the second query is part of the value for the key/value pair in the first query.
+        Console returns an object titled "queries" which contains the key/value pairs of each query.
 */
 
 // Edit code in Problem 8
